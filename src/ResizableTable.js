@@ -39,21 +39,14 @@ export class ResizableTable extends LitElement {
   `;
 
   static properties = {
-    name: { type: String },
     _height: { type: Number },
-    _x: { type: Number },
-    _w: { type: Number },
-    _isDown: { type: Boolean },
   };
 
   constructor() {
     super();
-    this.name = 'Somebody';
     this._x = 0;
     this._w = 0;
     this._isDown = false;
-    this._style = '';
-    this._whichTh = 0;
   }
 
   render() {
