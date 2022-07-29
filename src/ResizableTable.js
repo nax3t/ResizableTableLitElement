@@ -29,13 +29,6 @@ export class ResizableTable extends LitElement {
     .resizing {
       border-right: 1px dashed gray;
     }
-
-    .resizable {
-      border: 1px solid gray;
-      height: 100px;
-      width: 100px;
-      position: relative;
-    }
   `;
 
   static properties = {
@@ -157,7 +150,7 @@ export class ResizableTable extends LitElement {
   }
 
   _onMouseUp(e) {
-    this._isDown = false;
+    if (this._isDown) this._isDown = false;
     if (this.shadowRoot.querySelector('.resizing')) {
       this.shadowRoot.querySelector('.resizing').classList.remove('resizing');
     }
