@@ -4,6 +4,7 @@ export class ResizableTable extends LitElement {
   static styles = css`
     .table {
       border-collapse: collapse;
+      width: 100vw;
     }
     .table,
     .table th,
@@ -33,6 +34,7 @@ export class ResizableTable extends LitElement {
 
   static properties = {
     _height: { type: Number },
+    resizable: { type: Boolean },
   };
 
   constructor() {
@@ -137,32 +139,41 @@ export class ResizableTable extends LitElement {
   }
 
   _onMouseDown(e) {
-    if (e.target.classList.contains('resizer')) {
-      this._which = e.target.id.split('-')[1];
-      this._isDown = true;
-      this._x = e.clientX;
-
-      this._styles = window.getComputedStyle(e.path[1]);
-      this._w = parseInt(this._styles.width, 10);
-
-      e.target.classList.add('resizing');
+    console.log('RESIZABLE?', this.resizable);
+    if (this.resizable) {
+      if (e.target.classList.contains('resizer')) {
+        this._which = e.target.id.split('-')[1];
+        this._isDown = true;
+        this._x = e.clientX;
+  
+        this._styles = window.getComputedStyle(e.path[1]);
+        this._w = parseInt(this._styles.width, 10);
+  
+        e.target.classList.add('resizing');
+      }
     }
   }
 
   _onMouseUp(e) {
-    if (this._isDown) this._isDown = false;
-    if (this.shadowRoot.querySelector('.resizing')) {
-      this.shadowRoot.querySelector('.resizing').classList.remove('resizing');
+    console.log('RESIZABLE?', this.resizable);
+    if (this.resizable) {
+      if (this._isDown) this._isDown = false;
+      if (this.shadowRoot.querySelector('.resizing')) {
+        this.shadowRoot.querySelector('.resizing').classList.remove('resizing');
+      }
     }
   }
 
   _onMouseMove(e) {
     let _this = document.getElementById('resizable-table');
-    if (_this._isDown) {
-      const dx = e.clientX - _this._x;
-      const ths = _this.shadowRoot.querySelectorAll('th');
-      const th = ths[_this._which];
-      th.style.width = `${_this._w + dx}px`;
+    console.log('RESIZABLE?', _this.resizable);
+    if (_this.resizable) {
+      if (_this._isDown) {
+        const dx = e.clientX - _this._x;
+        const ths = _this.shadowRoot.querySelectorAll('th');
+        const th = ths[_this._which];
+        th.style.width = `${_this._w + dx}px`;
+      }
     }
   }
 }
